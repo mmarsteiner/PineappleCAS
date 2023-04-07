@@ -49,7 +49,7 @@ uint8_t *read_ans(unsigned *ans_len) {
 
     ti_CloseAll();
 
-    v = ti_OpenVar(ti_Ans, "r", TI_STRING_TYPE);
+    v = ti_OpenVar(OS_VAR_ANS, "r", OS_TYPE_STR);
 
     /*If Ans is a string*/
     if(is_var_string_type(v)) {
@@ -138,7 +138,7 @@ void cleanup_args(arg_list *args) {
 void write_ans(int val) {
     real_t real;
     real = os_Int24ToReal(val);
-    ti_SetVar(TI_REAL_TYPE, ti_Ans, &real);
+    ti_SetVar(OS_TYPE_REAL, OS_VAR_ANS, &real);
 }
 
 void success() {
@@ -198,7 +198,7 @@ pcas_ast_t *parse_from_tok(uint8_t *tok, pcas_error_t *err) {
 
     ti_CloseAll();
 
-    var = ti_OpenVar((char*)tok, "r", tok[0] == 0x5Eu ? TI_EQU_TYPE : TI_STRING_TYPE);
+    var = ti_OpenVar((char*)tok, "r", tok[0] == 0x5Eu ? OS_TYPE_EQU : OS_TYPE_STR);
 
     /*If we're opening Ans or a string and the type is not a string type*/
     if(tok[0] != 0x5Eu && !is_var_string_type(var)) {
@@ -236,7 +236,7 @@ void write_to_tok(uint8_t *tok, pcas_ast_t *expression, pcas_error_t *err) {
 
     ti_CloseAll();
 
-    var = ti_OpenVar((char*)tok, "w", tok[0] == 0x5Eu ? TI_EQU_TYPE : TI_STRING_TYPE);
+    var = ti_OpenVar((char*)tok, "w", tok[0] == 0x5Eu ? OS_TYPE_EQU : OS_TYPE_STR);
 
     if(var != 0) {
 
