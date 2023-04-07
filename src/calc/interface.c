@@ -206,7 +206,7 @@ pcas_ast_t *parse_from_tok(uint8_t *tok, pcas_error_t *err) {
         return NULL;
     }
 
-    if(var != NULL) {
+    if(var != 0) {
         const uint8_t *data;
         uint16_t size;
 
@@ -639,3 +639,4 @@ bool interface_Valid() {
 #else
 typedef int make_iso_compilers_happy;
 #endif
+#pragma clang diagnostic pop
