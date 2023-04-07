@@ -47,8 +47,6 @@ uint8_t *read_ans(unsigned *ans_len) {
 
     uint16_t size;
 
-    ti_CloseAll();
-
     v = ti_OpenVar(OS_VAR_ANS, "r", OS_TYPE_STR);
 
     /*If Ans is a string*/
@@ -196,8 +194,6 @@ void tok_fix(uint8_t **symbol, unsigned *symbol_len) {
 pcas_ast_t *parse_from_tok(uint8_t *tok, pcas_error_t *err) {
     ti_var_t var;
 
-    ti_CloseAll();
-
     var = ti_OpenVar((char*)tok, "r", tok[0] == 0x5Eu ? OS_TYPE_EQU : OS_TYPE_STR);
 
     /*If we're opening Ans or a string and the type is not a string type*/
@@ -233,8 +229,6 @@ void write_to_tok(uint8_t *tok, pcas_ast_t *expression, pcas_error_t *err) {
     unsigned bin_len;
     uint8_t *bin;
     ti_var_t var;
-
-    ti_CloseAll();
 
     var = ti_OpenVar((char*)tok, "w", tok[0] == 0x5Eu ? OS_TYPE_EQU : OS_TYPE_STR);
 
@@ -639,4 +633,3 @@ bool interface_Valid() {
 #else
 typedef int make_iso_compilers_happy;
 #endif
-#pragma clang diagnostic pop
