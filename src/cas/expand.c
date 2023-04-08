@@ -29,14 +29,14 @@ pcas_ast_t *combine(pcas_ast_t *add, pcas_ast_t *b) {
     return expanded;
 }
 
-static bool _expand(pcas_ast_t *e, unsigned char flags) {
+static bool s_expand(pcas_ast_t *e, unsigned char flags) {
     unsigned i, j;
 
     bool did_change = false;
     bool intermediate_change = false;
 
     for(i = 0; i < ast_ChildLength(e); i++)
-        did_change |= _expand(ast_ChildGet(e, i), flags);
+        did_change |= s_expand(ast_ChildGet(e, i), flags);
 
     do {
         intermediate_change = false;
@@ -98,7 +98,8 @@ static bool _expand(pcas_ast_t *e, unsigned char flags) {
             replace_node(e, ast_MakeBinary(OP_MULT, ast_Copy(num), ast_MakeBinary(OP_DIV, ast_MakeNumber(num_FromInt(1)), ast_Copy(den))));
 
             /*This could be dangerous, but we'll cross that bridge when we get there.*/
-            _expand(e, EXP_DISTRIB_NUMBERS | EXP_DISTRIB_ADDITION | EXP_DISTRIB_MULTIPLICATION | EXP_DISTRIB_ADDITION | EXP_DISTRIB_POWERS);
+            s_expand(e, EXP_DISTRIB_NUMBERS | EXP_DISTRIB_ADDITION | EXP_DISTRIB_MULTIPLICATION | EXP_DISTRIB_ADDITION |
+                        EXP_DISTRIB_POWERS);
 
             intermediate_change = true;
             did_change = true;
@@ -184,7 +185,7 @@ bool expand(pcas_ast_t *e, unsigned char flags) {
     bool changed = false;
     /*Expand powers first to make things faster*/
     if(flags & EXP_EXPAND_POWERS)
-        changed |= _expand(e, EXP_EXPAND_POWERS);
-    changed |= _expand(e, flags & ~EXP_EXPAND_POWERS);
+        changed |= s_expand(e, EXP_EXPAND_POWERS);
+    changed |= s_expand(e, flags & ~EXP_EXPAND_POWERS);
     return changed;
 }
